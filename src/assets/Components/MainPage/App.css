@@ -1,0 +1,61 @@
+#root {
+  display: grid;
+  grid-template-rows: 10vh 1fr 10vh;
+  min-height: 100vh;
+}
+
+footer,
+header {
+  background-image: url("../../pictures/background.png");
+  padding: 1rem;
+  color: white;
+}
+main {
+  padding: 1rem;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+footer {
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.header-logo {
+  width: 200px;
+  height: auto;
+}
+
+header > nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+}
+
+.rand-anime-container {
+  display: flex;
+  padding: 1rem;
+  align-items: center;
+  border: 1px solid black;
+  gap: 1rem;
+}
+
+.rand-anime-img {
+  height: 400px;
+  width: 400px;
+  border: 4px solid #a56eff;
+  border-radius: 50%;
+}
