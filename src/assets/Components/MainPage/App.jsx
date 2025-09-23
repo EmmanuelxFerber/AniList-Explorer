@@ -1,12 +1,7 @@
 import React from "react";
-import { Outlet } from "react-router";
-
 import "./App.css";
 import { getRandomAnime } from "../../Api/api";
-
 import EpisodeList from "./EpisodeList";
-import Header from "../Header";
-import Footer from "../Footer";
 
 function App() {
   const [anime, setAnime] = React.useState();
@@ -14,22 +9,24 @@ function App() {
     anime || {};
   const [epsDisplayed, setEpsDisplayed] = React.useState(false);
   React.useEffect(() => {
-    async function getData() {
-      const data = await getRandomAnime();
-      await setAnime(data);
-    }
     getData();
   }, []);
+
+  async function getData() {
+    const data = await getRandomAnime();
+    console.log("app page running");
+    await setAnime(data);
+  }
 
   function displayEps() {
     setEpsDisplayed((oldDisplay) => !oldDisplay);
   }
-  console.log(episodes);
 
   const genreString = genres ? genres.map((genre) => `${genre.name} `) : null;
   return (
     <>
       <main>
+        <button onClick={getData}>next</button>
         {anime ? (
           <>
             <div className="rand-anime-container">

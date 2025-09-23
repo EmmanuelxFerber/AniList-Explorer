@@ -7,6 +7,7 @@ export default function EpisodeList({ id }) {
   React.useEffect(() => {
     async function getData() {
       const data = await getAnimeEpisodes(id);
+      console.log("episode list running");
       setEpisodeList(data);
     }
     getData();
@@ -29,7 +30,5 @@ export default function EpisodeList({ id }) {
     ) : (
       <h1>No data avalible</h1>
     );
-
-  console.log(episodeList);
   return episodeHTML;
 }
