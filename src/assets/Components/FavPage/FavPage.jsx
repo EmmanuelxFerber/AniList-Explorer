@@ -35,6 +35,7 @@ export default function FavPage() {
             <button
               onClick={() => {
                 removeFavAnime(user.uid, anime.id);
+                console.log(anime.id);
                 setFavAnime((prevAnime) =>
                   prevAnime.filter((a) => a.id !== anime.id)
                 );

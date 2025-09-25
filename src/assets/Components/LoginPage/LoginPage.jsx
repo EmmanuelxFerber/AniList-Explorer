@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, Link } from "react-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Firebase/firebase";
 import { useAuth } from "../../Context/AuthContext";
@@ -54,6 +54,10 @@ export default function LoginPage() {
         />
         <button>login</button>
       </form>
+      <p>Dont have an account?</p>
+      <Link to="/signinpage" state={{ from: location }} replace>
+        sign in!
+      </Link>
     </section>
   );
 }

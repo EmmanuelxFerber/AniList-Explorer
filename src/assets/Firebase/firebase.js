@@ -6,6 +6,8 @@ import {
   getFirestore,
   doc,
   deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
@@ -58,6 +60,15 @@ export async function getUserAnimeList(userId) {
 
   return favourites;
 }
+//to get a number of anime in their favList for current user
+export async function getUserAnimeListNumber(userId) {
+  const favRef = collection(db, "UserInfo", userId, "favList");
+  const snapshot = await getDocs(favRef);
+
+  const amountOfAnime = snapshot.docs.length;
+
+  return amountOfAnime;
+}
 
 //to remove specific anime from the current user
 export async function removeFavAnime(userId, animedocID) {
@@ -67,6 +78,56 @@ export async function removeFavAnime(userId, animedocID) {
   } catch (error) {
     console.log("Error removing anime: ", error);
   }
+}
+//provides the firestore anime id based on its api id
+export async function findAnimeById(userId, mal_id) {
+  console.log("Running query for:", mal_id, "under userId:", userId);
+  const favRef = collection(db, "UserInfo", userId, "favList");
+
+  const q = query(favRef, where("mal_id", "==", mal_id));
+  const snapshot = await getDocs(q);
+
+  console.log("Query result size:", snapshot.size);
+
+  snapshot.forEach((doc) => {
+    console.log("Matching doc:", doc.id, doc.data());
+  });
+  if (snapshot.empty) return null;
+  const doc = snapshot.docs[0];
+  return doc.id;
+}
+
+// deletes the anime based only on its api id if it exists within fav list
+export async function DeleteAnimeByMal_id(userId, mal_id) {
+  const animeID = await findAnimeById(userId, mal_id);
+
+  if (animeID) {
+    removeFavAnime(userId, animeID);
+  } else {
+    console.log("This anime is not a part of the FavList");
+  }
+}
+
+//adds user data into the profile information in firebase
+export async function addUserData(userID, infoToAdd) {
+  try {
+    await addDoc(collection(db, "UserInfo", userID, "info"), infoToAdd);
+  } catch (error) {
+    console.log("There was an error: ", error);
+  }
+}
+
+//displays user data
+export async function getUserData(userId) {
+  const userRef = collection(db, "UserInfo", userId, "info");
+  const snapshot = await getDocs(userRef);
+
+  const userInfo = snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return userInfo;
 }
 
 export { auth };
