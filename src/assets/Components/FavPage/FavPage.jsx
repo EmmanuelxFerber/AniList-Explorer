@@ -1,6 +1,7 @@
 import React from "react";
 import { getUserAnimeList, removeFavAnime } from "../../Firebase/firebase";
 import { useAuth } from "../../Context/AuthContext";
+import "./FavPage.css";
 
 export default function FavPage() {
   const { user } = useAuth();

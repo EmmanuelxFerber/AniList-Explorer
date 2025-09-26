@@ -1,0 +1,23 @@
+.episode-info {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.episode-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+  background: linear-gradient(90deg, #3b3c5a, #2b2c4a);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.episode-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.episode-container a {
+  color: #fff;
+}

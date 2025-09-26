@@ -1,9 +1,12 @@
 import React from "react";
 import "./App.css";
-import { getRandomAnime } from "../../Api/api";
-import EpisodeList from "./EpisodeList";
+import { getRandomTopAnime } from "../../Api/api";
+import { useAuth } from "../../Context/AuthContext";
+import EpisodeList from "./EpisodeList/EpisodeList";
+import { IsAnimeInFavList } from "../../Firebase/firebase";
 
 function App() {
+  const { user } = useAuth();
   const [anime, setAnime] = React.useState();
   const { title, genres, images, synopsis, episodes, mal_id, score } =
     anime || {};
@@ -13,8 +16,9 @@ function App() {
   }, []);
 
   async function getData() {
-    const data = await getRandomAnime();
-    console.log("app page running");
+    // const data = await getRandomAnime();
+    setEpsDisplayed(false);
+    const data = await getRandomTopAnime();
     await setAnime(data);
   }
 
@@ -35,8 +39,10 @@ function App() {
               </div>
 
               <div className="rand-anime-info">
-                <h1 className="rand-anime-title">{title}</h1>
-                <p>Score: {score ? score : "n/a"}</p>
+                <div>
+                  <h1 className="rand-anime-title">{title}</h1>
+                  <p>Score: {score ? score : "n/a"}</p>
+                </div>
                 <p className="rand-anime-genre">{genreString}</p>
                 <p className="rand-anime-description">{synopsis}</p>
               </div>

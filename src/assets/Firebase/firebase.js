@@ -97,6 +97,17 @@ export async function findAnimeById(userId, mal_id) {
   return doc.id;
 }
 
+//returns true if the anime is in user's anime list
+export async function IsAnimeInFavList(userId, mal_id) {
+  const animeID = await findAnimeById(userId, mal_id);
+
+  if (animeID) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // deletes the anime based only on its api id if it exists within fav list
 export async function DeleteAnimeByMal_id(userId, mal_id) {
   const animeID = await findAnimeById(userId, mal_id);

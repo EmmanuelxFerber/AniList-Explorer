@@ -1,7 +1,15 @@
-export async function getRandomAnime() {
-  const res = await fetch("https://api.jikan.moe/v4/random/anime");
+export async function getRandomTopAnime() {
+  let randomPage = Math.floor(Math.random() * 40);
+
+  const res = await fetch(
+    `https://api.jikan.moe/v4/top/anime?page=${randomPage}`
+  );
   const data = await res.json();
-  return data.data;
+  const filterMature = data.data.filter(
+    (anime) => anime.rating !== "RX - Hentai"
+  );
+  let randomAnime = Math.floor(Math.random() * filterMature.length);
+  return filterMature[randomAnime];
 }
 
 export async function getAnimeById(id) {

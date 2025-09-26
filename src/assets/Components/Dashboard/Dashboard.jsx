@@ -1,6 +1,7 @@
 import { useAuth } from "../../Context/AuthContext";
 import { getUserData, getUserAnimeListNumber } from "../../Firebase/firebase";
 import React from "react";
+import "./Dashboard.css";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -19,10 +20,10 @@ export default function Dashboard() {
   }, []);
   const { userName, dateRegistered } = userInfo ? userInfo : "nothing";
   return (
-    <>
+    <section className="user-data-section">
       <h1>Username: {userName}</h1>
       <p>With us since: {dateRegistered}</p>
       <p>You have {animeNumber} anime in your Fav list</p>
-    </>
+    </section>
   );
 }

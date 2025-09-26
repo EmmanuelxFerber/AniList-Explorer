@@ -1,5 +1,6 @@
 import React from "react";
-import { getAnimeEpisodes } from "../../Api/api";
+import { getAnimeEpisodes } from "../../../Api/api";
+import "./EpisodeList.css";
 
 export default function EpisodeList({ id }) {
   const [episodeList, setEpisodeList] = React.useState();
@@ -7,28 +8,23 @@ export default function EpisodeList({ id }) {
   React.useEffect(() => {
     async function getData() {
       const data = await getAnimeEpisodes(id);
-      console.log("episode list running");
       setEpisodeList(data);
     }
     getData();
   }, []);
-
   const episodeHTML =
     episodeList && episodeList.length > 0 ? (
-      episodeList.map((episode) => {
+      episodeList.map((episode, index) => {
         return (
-          <section className="episode-info">
-            <h2>
-              <a target="_blank" href={episode.forum_url}>
-                {episode.title}
-              </a>
-            </h2>
-            <p>{episode.filer ? "filler episode" : "cannon episode"}</p>
-          </section>
+          <div className="episode-container">
+            <a target="_blank" href={episode.forum_url}>
+              {`${index}. ${episode.title}`}
+            </a>
+          </div>
         );
       })
     ) : (
       <h1>No data avalible</h1>
     );
-  return episodeHTML;
+  return <section className="episode-info">{episodeHTML}</section>;
 }

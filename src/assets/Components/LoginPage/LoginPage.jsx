@@ -3,6 +3,7 @@ import { useLocation, useNavigate, Link } from "react-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Firebase/firebase";
 import { useAuth } from "../../Context/AuthContext";
+import "./LoginPage.css";
 
 export default function LoginPage() {
   const [error, setError] = useState(null);

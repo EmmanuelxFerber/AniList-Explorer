@@ -11,11 +11,40 @@ header {
   color: white;
 }
 main {
-  padding: 1rem;
   min-height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background: linear-gradient(to bottom, #1e1f35, #2b2c4a);
+  color: white;
+}
+
+main button {
+  margin: 1rem 0;
+  border: none;
+  color: white;
+  background-color: #121330;
+  padding: 0.5rem 0;
+  width: 90vw;
+  align-self: center;
+}
+
+.rand-anime-info div {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+main h1 {
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+main .rand-anime-genre,
+main .rand-anime-description {
+  color: #ccc;
+  margin-bottom: 0.5rem;
 }
 header {
   display: flex;
@@ -25,6 +54,19 @@ header {
 }
 footer {
   box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 2rem;
+  margin: 0 1rem 0 auto;
+}
+
+.footer-nav a {
+  text-decoration: none;
+  color: white;
 }
 
 .header-logo {
@@ -51,11 +93,11 @@ header a {
   align-items: center;
   border: 1px solid black;
   gap: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 -4px 8px rgba(0, 0, 0, 0.2);
 }
-
 .rand-anime-img {
   height: 400px;
   width: 400px;
-  border: 4px solid #a56eff;
+  border: 4px solid #121330;
   border-radius: 50%;
 }
