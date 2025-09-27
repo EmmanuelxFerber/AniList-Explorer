@@ -25,14 +25,16 @@ export default function FavPage() {
 
         return (
           <div key={anime.id} className="anime-container">
-            <img className="anime-img" src={anime.images.jpg.image_url} />
+            <div className="anime-img-container">
+              <img className="anime-img" src={anime.images.jpg.image_url} />
+            </div>
             <div className="anime-info">
-              <h1 className="anime-img">{anime.title}</h1>
+              <h1 className="anime-title">{anime.title}</h1>
               <p className="anime-genre">{genreString}</p>
               <p className="anime-description">{anime.synopsis}</p>
-              <p>{anime.mal_id}</p>
               <p>Added at: {anime.addedAt}</p>
             </div>
+
             <button
               onClick={() => {
                 removeFavAnime(user.uid, anime.id);

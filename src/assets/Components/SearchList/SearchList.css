@@ -1,12 +1,55 @@
 .animelist-section {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2rem;
-  padding: 1rem;
+  padding: 1rem 0;
 }
 
 .anime-container {
-  height: 40vh;
-  border: 1px solid red;
   display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  justify-content: start;
+  height: 40vh;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  overflow: hidden;
+  background-color: #121330;
+}
+
+.anime-info {
+  align-self: flex-start;
+  width: 60vw;
+}
+
+.anime-info h1 {
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.anime-info .anime-genre,
+.anime-info .anime-description {
+  color: #ccc;
+  margin-bottom: 0.5rem;
+}
+
+.anime-img-container {
+  width: 200px;
+}
+
+.anime-img {
+  height: 100%;
+  width: 100%;
+}
+
+.animelist-section button {
+  margin-left: auto;
+  width: 100px;
+  height: 100px;
+  align-self: center;
+  border-radius: 5px;
+  border: none;
 }

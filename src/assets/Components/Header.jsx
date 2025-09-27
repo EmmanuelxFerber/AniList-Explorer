@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router";
 import { auth } from "../Firebase/firebase";
 import { useAuth } from "../Context/AuthContext";
 import { signOut } from "firebase/auth";
+import SearchBar from "./UI elements/SearchBar";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -33,13 +34,15 @@ export default function Header() {
         <NavLink to={"favpage"}>My List</NavLink>
         <NavLink to={"dashboard"}>Profile</NavLink>
         {user ? (
-          <button onClick={handleLogout}>Log out</button>
+          <button className="logout-btn" onClick={handleLogout}>
+            Log out
+          </button>
         ) : (
           <NavLink to={"loginpage"}>Login</NavLink>
         )}
       </nav>
       <form action={searchAnime}>
-        <input type="text" name="search" placeholder="search for anime" />
+        <SearchBar />
       </form>
     </header>
   );

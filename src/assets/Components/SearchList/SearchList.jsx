@@ -41,17 +41,29 @@ export default function SearchList() {
     animeList || favAnime ? (
       animeList.map((anime) => {
         const { title, genres, images, synopsis, mal_id } = anime || {};
+
+        //curates the description string so that it doesnt overflow
+        const synopsisShortened =
+          synopsis.split(" ").length > 200
+            ? synopsis.split(" ").slice(0, 200).join(" ") + "..."
+            : synopsis;
+
         const genreString = genres
           ? genres.map((genre) => `${genre.name} `)
           : "no genres";
+
         const isInFavList = favAnime?.some((anime) => anime.animeId === mal_id);
+
         return (
           <div key={mal_id} className="anime-container">
-            <img className="anime-img" src={images.jpg.image_url} />
+            <div className="anime-img-container">
+              <img className="anime-img" src={images.jpg.image_url} />
+            </div>
+
             <div className="anime-info">
-              <h1 className="anime-img">{title}</h1>
+              <h1 className="anime-title">{title}</h1>
               <p className="anime-genre">{genreString}</p>
-              <p className="anime-description">{synopsis}</p>
+              <p className="anime-description">{synopsisShortened}</p>
             </div>
 
             {isInFavList ? (
