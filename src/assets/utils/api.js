@@ -1,4 +1,6 @@
-export async function getRandomTopAnime() {
+import { shuffle } from "./utils";
+
+export async function getRandomTopAnimeArray() {
   let randomPage = Math.floor(Math.random() * 40);
 
   const res = await fetch(
@@ -8,8 +10,8 @@ export async function getRandomTopAnime() {
   const filterMature = data.data.filter(
     (anime) => anime.rating !== "RX - Hentai"
   );
-  let randomAnime = Math.floor(Math.random() * filterMature.length);
-  return filterMature[randomAnime];
+  let randomAnimeArray = shuffle(filterMature);
+  return randomAnimeArray;
 }
 
 export async function getAnimeById(id) {

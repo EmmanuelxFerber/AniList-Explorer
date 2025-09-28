@@ -1,5 +1,5 @@
 import React from "react";
-import { getAnimeEpisodes } from "../../../Api/api";
+import { getAnimeEpisodes } from "../../../utils/api";
 import "./EpisodeList.css";
 
 export default function EpisodeList({ id }) {

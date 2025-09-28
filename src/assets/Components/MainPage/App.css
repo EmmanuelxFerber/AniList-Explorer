@@ -111,10 +111,27 @@ header a {
   background-color: #121330;
   gap: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 -4px 8px rgba(0, 0, 0, 0.2);
+  height: 100%;
+  position: absolute;
 }
+
+.rand-anime-container.slide {
+  transform: translateX(-100vw);
+  transition: transform 0.5s ease;
+}
+
 .rand-anime-img {
   height: 400px;
   width: 400px;
   border: 4px solid #121330;
   border-radius: 50%;
+}
+
+.slide-container {
+  position: relative;
+  height: 60vh;
+  position: relative;
+  width: 100%;
+  height: 400px; /* or however tall your AnimeComponent is */
+  overflow: hidden;
 }

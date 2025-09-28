@@ -20,7 +20,6 @@ export default function Footer() {
         >
           LinkedIn
         </a>
-        <a href="">Portfolio</a>
       </nav>
     </footer>
   );

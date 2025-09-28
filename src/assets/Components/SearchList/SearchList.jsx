@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { getAnimeSearch } from "../../Api/api";
+import { getAnimeSearch } from "../../utils/api";
 import {
   addFavAnime,
   getUserAnimeList,
