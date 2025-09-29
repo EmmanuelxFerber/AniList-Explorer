@@ -8,7 +8,7 @@ import { IsAnimeInFavList } from "../../Firebase/firebase";
 function App() {
   const [anime, setAnime] = React.useState();
   const [epsDisplayed, setEpsDisplayed] = React.useState(false);
-  const [animeIndex, setAnimeIndex] = React.useState(0);
+  const [animeIndex, setAnimeIndex] = React.useState(1);
   React.useEffect(() => {
     getData();
   }, []);
@@ -24,7 +24,7 @@ function App() {
       setAnimeIndex((old) => old + 1);
     } else {
       getData();
-      setAnimeIndex(0);
+      setAnimeIndex(1);
     }
 
     setEpsDisplayed(false);

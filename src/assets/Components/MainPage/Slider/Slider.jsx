@@ -11,29 +11,40 @@ export default function Slider({
   incrementAnimeIndex,
 }) {
   const { episodes, mal_id } = anime[animeIndex] || {};
-  const [animationClass, setAnimationClass] = React.useState(
-    "rand-anime-container"
-  );
+  const [sliding, setSliding] = React.useState(false);
+  const animationClass1 = sliding
+    ? "rand-anime-container slide"
+    : "rand-anime-container";
+  const animationClass2 = sliding
+    ? "rand-anime-container postSlide"
+    : "rand-anime-container preSlide";
 
   function SlideForward() {
     // Step 1: Start the slide animation
-    setAnimationClass("rand-anime-container slide");
+    setSliding(true);
 
     // Step 2: Wait for animation to finish before switching anime
     setTimeout(() => {
       incrementAnimeIndex(); // move to next anime
-      setAnimationClass("rand-anime-container"); // reset class
-    }, 500); // duration must match your CSS transition time
+      setSliding(false); // reset class
+    }, 500);
   }
 
   return (
     <>
-      <button onClick={SlideForward}>next</button>
+      <button disabled={sliding ? true : false} onClick={SlideForward}>
+        next
+      </button>
       <div className="slide-container">
         <AnimeComponent
           anime={anime}
+          animeIndex={animeIndex - 1}
+          animationClass={animationClass1}
+        />
+        <AnimeComponent
+          anime={anime}
           animeIndex={animeIndex}
-          animationClass={animationClass}
+          animationClass={animationClass2}
         />
       </div>
 

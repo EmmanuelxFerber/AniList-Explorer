@@ -1,8 +1,6 @@
 export default function AnimeComponent({ anime, animeIndex, animationClass }) {
   const { title, genres, images, synopsis, score } = anime[animeIndex] || {};
   const genreString = genres ? genres.map((genre) => `${genre.name} `) : null;
-
-  console.log(animationClass);
   return (
     <div className={animationClass}>
       <div className="rand-anime-img-container">

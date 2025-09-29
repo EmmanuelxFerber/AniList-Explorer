@@ -107,10 +107,7 @@ header a {
   display: flex;
   padding: 1rem;
   align-items: center;
-  border: 1px solid black;
-  background-color: #121330;
   gap: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 -4px 8px rgba(0, 0, 0, 0.2);
   height: 100%;
   position: absolute;
 }
@@ -119,7 +116,13 @@ header a {
   transform: translateX(-100vw);
   transition: transform 0.5s ease;
 }
-
+.rand-anime-container.preSlide {
+  transform: translateX(+100vw);
+}
+.rand-anime-container.postSlide {
+  transform: translateX(0);
+  transition: transform 0.5s ease;
+}
 .rand-anime-img {
   height: 400px;
   width: 400px;
@@ -132,6 +135,8 @@ header a {
   height: 60vh;
   position: relative;
   width: 100%;
-  height: 400px; /* or however tall your AnimeComponent is */
   overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 -4px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid black;
+  background-color: #121330;
 }
