@@ -20,13 +20,11 @@ export default function Slider({
     : "rand-anime-container preSlide";
 
   function SlideForward() {
-    // Step 1: Start the slide animation
     setSliding(true);
 
-    // Step 2: Wait for animation to finish before switching anime
     setTimeout(() => {
-      incrementAnimeIndex(); // move to next anime
-      setSliding(false); // reset class
+      incrementAnimeIndex();
+      setSliding(false);
     }, 500);
   }
 
@@ -48,7 +46,11 @@ export default function Slider({
         />
       </div>
 
-      <button onClick={displayEps} className="rand-anime-ep-number">
+      <button
+        disabled={sliding ? true : false}
+        onClick={displayEps}
+        className="rand-anime-ep-number"
+      >
         List of episodes ({episodes})
       </button>
       {epsDisplayed ? (
