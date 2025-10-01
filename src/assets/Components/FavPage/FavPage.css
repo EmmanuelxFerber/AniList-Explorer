@@ -2,3 +2,25 @@
   background: linear-gradient(to bottom, #1e1f35, #2b2c4a);
   color: white;
 }
+
+.anime-info {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.anime-description {
+  height: 70%;
+  overflow: auto;
+  border: 1px solid black;
+  padding: 10px 0 10px 0;
+  line-height: 1.2rem;
+}
+
+.anime-description::-webkit-scrollbar {
+  display: none;
+}
+
+.anime-added-at {
+  margin-top: auto;
+}

@@ -2,3 +2,21 @@
   background: linear-gradient(to bottom, #1e1f35, #2b2c4a);
   color: white;
 }
+
+.filter-form {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.user-data,
+.genre-dropdown {
+  width: 200px;
+}
+
+.genre-dropdown {
+  min-height: 2rem;
+  max-height: 200px;
+  overflow: auto;
+  background-color: #1e1f35;
+}

@@ -10,7 +10,6 @@ export default function FavPage() {
     const userID = user.uid;
     async function getData() {
       const data = await getUserAnimeList(userID);
-      console.log("fav page running");
       setFavAnime(data);
     }
     getData();
@@ -18,21 +17,28 @@ export default function FavPage() {
 
   const animeList = favAnime
     ? favAnime.map((anime) => {
-        console.log(anime.addedAt);
-        const genreString = anime.genres
-          ? anime.genres.map((genre) => `${genre.name} `)
+        const { addedAt, genres, synopsis, id, images, title, url } = anime;
+        const genreString = genres
+          ? genres.map((genre) => `${genre.name} `)
           : "no genres";
+        // const synopsisShortened = synopsis
+        //   ? synopsis.split(" ").length > 150
+        //     ? synopsis.split(" ").slice(0, 150).join(" ") + "..."
+        //     : synopsis
+        //   : null;
 
         return (
-          <div key={anime.id} className="anime-container">
+          <div key={id} className="anime-container">
             <div className="anime-img-container">
-              <img className="anime-img" src={anime.images.jpg.image_url} />
+              <img className="anime-img" src={images.jpg.image_url} />
             </div>
             <div className="anime-info">
-              <h1 className="anime-title">{anime.title}</h1>
+              <a href={url} target="_blank">
+                <h1 className="rand-anime-title">{title}</h1>
+              </a>
               <p className="anime-genre">{genreString}</p>
-              <p className="anime-description">{anime.synopsis}</p>
-              <p>Added at: {anime.addedAt}</p>
+              <p className="anime-description">{synopsis}</p>
+              <p className="anime-added-at">Added at: {addedAt}</p>
             </div>
 
             <button

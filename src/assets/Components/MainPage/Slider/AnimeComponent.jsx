@@ -7,7 +7,7 @@ import { useAuth } from "../../../Context/AuthContext";
 import { useState, useEffect } from "react";
 
 export default function AnimeComponent({ anime, animeIndex, animationClass }) {
-  const { title, genres, images, synopsis, score, mal_id } =
+  const { title, genres, images, synopsis, score, mal_id, url } =
     anime[animeIndex] || {};
   const genreString = genres ? genres.map((genre) => `${genre.name} `) : null;
   const { user } = useAuth();
@@ -27,12 +27,16 @@ export default function AnimeComponent({ anime, animeIndex, animationClass }) {
       </div>
 
       <div className="rand-anime-info">
-        <div>
-          <h1 className="rand-anime-title">{title}</h1>
+        <div className="rand-anime-title-score">
+          <a href={url} target="_blank">
+            <h1 className="rand-anime-title">{title}</h1>
+          </a>
           <p>Score: {score ? score : "n/a"}</p>
         </div>
         <p className="rand-anime-genre">{genreString}</p>
+
         <p className="rand-anime-description">{synopsis}</p>
+
         {user ? (
           isFav ? (
             <button

@@ -14,6 +14,18 @@ export async function getRandomTopAnimeArray() {
   return randomAnimeArray;
 }
 
+export async function getRandomFilteredAnimeArray(query) {
+  const res = await fetch(
+    `https://api.jikan.moe/v4/anime${query[0].filterQuery}`
+  );
+  const data = await res.json();
+  const filterMature = data.data.filter(
+    (anime) => anime.rating !== "RX - Hentai"
+  );
+  let randomAnimeArray = shuffle(filterMature);
+  return randomAnimeArray;
+}
+
 export async function getAnimeById(id) {
   const res = await fetch(`https://api.jikan.moe/v4/anime/${id}/full`);
   const data = await res.json();
@@ -24,7 +36,6 @@ export async function getAnimeEpisodes(id) {
   const res = await fetch(`https://api.jikan.moe/v4/anime/${id}/episodes`);
 
   const data = await res.json();
-  console.log(`https://api.jikan.moe/v4/anime/${id}/episodes`);
   return data.data;
 }
 
@@ -38,6 +49,12 @@ export async function getAnimeEpisode(id, number) {
 
 export async function getAnimeSearch(animeName) {
   const res = await fetch(`https://api.jikan.moe/v4/anime?q=${animeName}`);
+  const data = await res.json();
+  return data.data;
+}
+
+export async function getAllGenres() {
+  const res = await fetch("https://api.jikan.moe/v4/genres/anime");
   const data = await res.json();
   return data.data;
 }

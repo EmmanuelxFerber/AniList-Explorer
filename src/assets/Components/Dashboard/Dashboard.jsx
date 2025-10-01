@@ -1,29 +1,129 @@
 import { useAuth } from "../../Context/AuthContext";
-import { getUserData, getUserAnimeListNumber } from "../../Firebase/firebase";
-import React from "react";
+import {
+  getUserData,
+  getUserAnimeListNumber,
+  setUserFilter,
+} from "../../Firebase/firebase";
+import { getAllGenres } from "../../utils/api";
+import { useState, useEffect } from "react";
 import "./Dashboard.css";
+import Popup from "../UI elements/Popup/Popup";
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const [userInfo, setUserInfo] = React.useState(null);
-  const [animeNumber, setAnimeNumber] = React.useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [animeNumber, setAnimeNumber] = useState(null);
+  const [genres, setGenres] = useState(null);
+  const [genreSearch, setGenreSearch] = useState("");
+  const [filteredGenres, setFilteredGenres] = useState([]);
+  const [filterError, setFilterError] = useState("null");
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function getData() {
       const data = await getUserData(user.uid);
       setUserInfo(data[0]);
       const animeData = await getUserAnimeListNumber(user.uid);
       setAnimeNumber(animeData);
+      const genreData = await getAllGenres();
+      setGenres(genreData);
     }
 
     getData();
   }, []);
+
+  useEffect(() => {
+    const search = genreSearch.toLowerCase();
+    const filtered = genres?.filter((genre) =>
+      genre.name.toLowerCase().includes(search)
+    );
+    setFilteredGenres(filtered);
+  }, [genreSearch, genres]);
+
+  function getGenreFilter(formData) {
+    const selectedGenre = formData.get("genre").toLowerCase();
+
+    if (selectedGenre) {
+      const selectedGenreObj = genres.filter((genre) => {
+        console.log();
+        return genre.name.toLowerCase() === selectedGenre;
+      })[0];
+      return selectedGenreObj.mal_id;
+    } else return null;
+  }
+
+  async function getScoreFilter(formData) {
+    const selectedScore = await formData.get("score").toLowerCase();
+    return selectedScore;
+  }
+
+  async function setFilter(formData) {
+    try {
+      setFilterError(null);
+      const score = await getScoreFilter(formData);
+      const genre = getGenreFilter(formData);
+
+      const searchQuery = {
+        filterQuery: `?min_score=${score}${genre ? `&genres=${genre}` : ""}`,
+      };
+      setUserFilter(user.uid, searchQuery);
+    } catch (error) {
+      setFilterError(error);
+    }
+  }
+
   const { userName, dateRegistered } = userInfo ? userInfo : "nothing";
   return (
     <section className="user-data-section">
-      <h1>Username: {userName}</h1>
-      <p>With us since: {dateRegistered}</p>
-      <p>You have {animeNumber} anime in your Fav list</p>
+      <div className="user-data">
+        <h1>Username: {userName}</h1>
+        <p>With us since: {dateRegistered}</p>
+        <p>You have {animeNumber} anime in your Fav list</p>
+      </div>
+      <form className="filter-form" action={setFilter}>
+        <div className="genre-filter">
+          <p>Genre</p>
+          <input
+            onChange={(e) => setGenreSearch(e.target.value)}
+            value={genreSearch}
+            type="text"
+            name="genre"
+          />
+
+          <ul className="genre-dropdown">
+            {filteredGenres?.map((genre) => (
+              <li key={genre.mal_id} onClick={() => setGenreSearch(genre.name)}>
+                {genre.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p>score</p>
+          <select name="score" id="score">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+          </select>
+        </div>
+        {filterError ? (
+          <Popup
+            type="error"
+            body={"There was a problem with setting up filter"}
+          >
+            <button>Set Filter</button>
+          </Popup>
+        ) : (
+          <Popup type="success" body={"Filter has been set"}>
+            <button>Set Filter</button>
+          </Popup>
+        )}
+      </form>
     </section>
   );
 }

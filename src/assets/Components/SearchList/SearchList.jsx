@@ -16,9 +16,8 @@ export default function SearchList() {
   const query = params.get("query");
   const [animeList, setAnimeList] = useState();
   const { user } = useAuth();
-  const [favAnime, setFavAnime] = useState(null);
+  const [favAnime, setFavAnime] = useState([]);
 
-  console.log(animeList);
   useEffect(() => {
     async function getData() {
       const searchData = await getAnimeSearch(query);
@@ -38,16 +37,17 @@ export default function SearchList() {
   }, [query]);
 
   const animeListHTML =
-    animeList || favAnime ? (
+    animeList && favAnime ? (
       animeList.map((anime) => {
-        const { title, genres, images, synopsis, mal_id } = anime || {};
+        const { title, genres, images, synopsis, mal_id, url } = anime || {};
 
         //curates the description string so that it doesnt overflow
-        const synopsisShortened =
-          synopsis.split(" ").length > 200
-            ? synopsis.split(" ").slice(0, 200).join(" ") + "..."
-            : synopsis;
 
+        const synopsisShortened = synopsis
+          ? synopsis.split(" ").length > 150
+            ? synopsis.split(" ").slice(0, 150).join(" ") + "..."
+            : synopsis
+          : null;
         const genreString = genres
           ? genres.map((genre) => `${genre.name} `)
           : "no genres";
@@ -61,7 +61,9 @@ export default function SearchList() {
             </div>
 
             <div className="anime-info">
-              <h1 className="anime-title">{title}</h1>
+              <a href={url} target="_blank">
+                <h1 className="rand-anime-title">{title}</h1>
+              </a>
               <p className="anime-genre">{genreString}</p>
               <p className="anime-description">{synopsisShortened}</p>
             </div>

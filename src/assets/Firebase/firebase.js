@@ -29,7 +29,8 @@ export async function addFavAnime(animeData, user) {
   if (!user) return;
 
   const userID = user.uid;
-  const { title, genres, images, synopsis, score, mal_id } = animeData || {};
+  const { title, genres, images, synopsis, score, mal_id, url } =
+    animeData || {};
   const addedAt = new Date().toLocaleDateString();
   const animeToAdd = {
     title,
@@ -39,6 +40,7 @@ export async function addFavAnime(animeData, user) {
     score,
     mal_id,
     addedAt,
+    url,
   };
 
   try {
@@ -81,18 +83,12 @@ export async function removeFavAnime(userId, animedocID) {
 }
 //provides the firestore anime id based on its api id
 export async function findAnimeById(userId, mal_id) {
-  console.log("Running query for:", mal_id, "under userId:", userId);
   const favRef = collection(db, "UserInfo", userId, "favList");
-
   const q = query(favRef, where("mal_id", "==", mal_id));
   const snapshot = await getDocs(q);
 
-  console.log("Query result size:", snapshot.size);
-
-  snapshot.forEach((doc) => {
-    console.log("Matching doc:", doc.id, doc.data());
-  });
   if (snapshot.empty) return null;
+
   const doc = snapshot.docs[0];
   return doc.id;
 }
@@ -131,6 +127,40 @@ export async function addUserData(userID, infoToAdd) {
 //displays user data
 export async function getUserData(userId) {
   const userRef = collection(db, "UserInfo", userId, "info");
+  const snapshot = await getDocs(userRef);
+
+  const userInfo = snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return userInfo;
+}
+
+//deletes user filter
+export async function clearUserFilter(userId) {
+  const filterRef = collection(db, "UserInfo", userId, "filter");
+  const snapshot = await getDocs(filterRef);
+
+  const deleteFiters = snapshot.docs.map((doc) => deleteDoc(doc.ref));
+  await Promise.all(deleteFiters);
+}
+
+//adds custom made filter to the user database
+export async function setUserFilter(userId, query) {
+  try {
+    //first delete previous filter
+    await clearUserFilter(userId);
+    //replace with new one
+    await addDoc(collection(db, "UserInfo", userId, "filter"), query);
+  } catch (error) {
+    console.log("filter failed to add to the database: ", error);
+  }
+}
+
+//gets custom made filter from the user database
+export async function getUserFilter(userId) {
+  const userRef = collection(db, "UserInfo", userId, "filter");
   const snapshot = await getDocs(userRef);
 
   const userInfo = snapshot.docs.map((doc) => ({

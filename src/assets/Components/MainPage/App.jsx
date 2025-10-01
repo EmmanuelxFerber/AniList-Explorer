@@ -1,22 +1,41 @@
 import React from "react";
 import "./App.css";
-import { getRandomTopAnimeArray } from "../../utils/api";
+import {
+  getRandomTopAnimeArray,
+  getRandomFilteredAnimeArray,
+} from "../../utils/api";
 
 import Slider from "./Slider/Slider";
-import { IsAnimeInFavList } from "../../Firebase/firebase";
+import { IsAnimeInFavList, getUserFilter } from "../../Firebase/firebase";
+import { useAuth } from "../../Context/AuthContext";
 
 function App() {
   const [anime, setAnime] = React.useState();
   const [epsDisplayed, setEpsDisplayed] = React.useState(false);
   const [animeIndex, setAnimeIndex] = React.useState(1);
+  const { user, loading } = useAuth();
+
+  //loads data only if fetching authentication is completed
   React.useEffect(() => {
-    getData();
-  }, []);
+    if (!loading) {
+      getData();
+    }
+  }, [loading]);
 
   async function getData() {
-    // const data = await getRandomAnime();
-    const data = await getRandomTopAnimeArray();
-    setAnime(data);
+    if (user) {
+      const filterQuery = await getUserFilter(user.uid);
+      if (!filterQuery) {
+        const data = await getRandomTopAnimeArray();
+        setAnime(data);
+      } else {
+        const data = await getRandomFilteredAnimeArray(filterQuery);
+        setAnime(data);
+      }
+    } else {
+      const data = await getRandomTopAnimeArray();
+      setAnime(data);
+    }
   }
   function incrementAnimeIndex() {
     const animeArrayLength = anime.length;
