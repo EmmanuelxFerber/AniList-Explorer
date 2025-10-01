@@ -27,6 +27,7 @@ function App() {
       const filterQuery = await getUserFilter(user.uid);
       if (!filterQuery) {
         const data = await getRandomTopAnimeArray();
+
         setAnime(data);
       } else {
         const data = await getRandomFilteredAnimeArray(filterQuery);
@@ -53,22 +54,28 @@ function App() {
     setEpsDisplayed((oldDisplay) => !oldDisplay);
   }
 
+  let renderState;
+  console.log(anime);
+  if (anime === null) {
+    renderState = <h2>There arent any anime that match the filter</h2>;
+  } else if (!anime) {
+    renderState = <h2>Loading...</h2>;
+  } else {
+    renderState = (
+      <Slider
+        anime={anime}
+        displayEps={displayEps}
+        epsDisplayed={epsDisplayed}
+        getData={getData}
+        incrementAnimeIndex={incrementAnimeIndex}
+        animeIndex={animeIndex}
+      />
+    );
+  }
+
   return (
     <>
-      <main>
-        {anime ? (
-          <Slider
-            anime={anime}
-            displayEps={displayEps}
-            epsDisplayed={epsDisplayed}
-            getData={getData}
-            incrementAnimeIndex={incrementAnimeIndex}
-            animeIndex={animeIndex}
-          />
-        ) : (
-          <h2>Loading...</h2>
-        )}
-      </main>
+      <main>{renderState}</main>
     </>
   );
 }
