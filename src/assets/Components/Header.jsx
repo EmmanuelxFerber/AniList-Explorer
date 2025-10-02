@@ -22,7 +22,14 @@ export default function Header() {
 
   return (
     <header>
-      <NavLink to={"/"}>
+      <NavLink
+        to={"/"}
+        onClick={() => {
+          if (window.location.pathname === "/") {
+            window.location.reload();
+          }
+        }}
+      >
         <img
           className="header-logo"
           src={logo}

@@ -21,7 +21,6 @@ export async function getRandomFilteredAnimeArray(query) {
     );
 
     const data = await res.json();
-    if (!data) return '"there was an error"';
     const totalPages = data.pagination.last_visible_page;
     let randomPage;
     if (totalPages < 20) {

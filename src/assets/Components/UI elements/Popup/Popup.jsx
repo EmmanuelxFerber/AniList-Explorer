@@ -7,7 +7,7 @@ import { FaExclamationTriangle } from "react-icons/fa";
 import { FaCircleXmark } from "react-icons/fa6";
 import { FaInfoCircle } from "react-icons/fa";
 
-export default function Popup({ children, type = "information", body }) {
+export default function Popup({ type = "information", body }) {
   const [popupOn, togglePopup] = React.useState(false);
   const [tooltipVisibility, setVisibility] = React.useState("invisible");
   const iconObj = {
@@ -29,9 +29,12 @@ export default function Popup({ children, type = "information", body }) {
     }, 2000);
   }
 
+  React.useEffect(() => {
+    renderPopup();
+  }, []);
+
   return (
-    <div onClick={renderPopup}>
-      {children}{" "}
+    <div>
       {popupOn && (
         <div className={`popup-container ${type} ${tooltipVisibility}`}>
           {iconObj[type]}

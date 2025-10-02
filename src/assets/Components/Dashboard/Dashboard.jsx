@@ -17,6 +17,7 @@ export default function Dashboard() {
   const [genreSearch, setGenreSearch] = useState("");
   const [filteredGenres, setFilteredGenres] = useState([]);
   const [filterError, setFilterError] = useState("null");
+  const [filterLoad, setFilterLoad] = useState(false);
 
   useEffect(() => {
     async function getData() {
@@ -61,17 +62,31 @@ export default function Dashboard() {
       setFilterError(null);
       const score = await getScoreFilter(formData);
       const genre = getGenreFilter(formData);
-
       const searchQuery = {
         filterQuery: `?min_score=${score}${genre ? `&genres=${genre}` : ""}`,
       };
       setUserFilter(user.uid, searchQuery);
+      setFilterLoad(true);
     } catch (error) {
       setFilterError(error);
+      setFilterLoad(true);
     }
   }
 
   const { userName, dateRegistered } = userInfo ? userInfo : "nothing";
+  let popupType;
+  if (filterLoad) {
+    if (filterError) {
+      popupType = (
+        <Popup
+          type="error"
+          body={"There was a problem with setting up filter"}
+        />
+      );
+    } else {
+      popupType = <Popup type="success" body={"Filter set up successfuly"} />;
+    }
+  } else null;
   return (
     <section className="user-data-section">
       <div className="user-data">
@@ -110,18 +125,8 @@ export default function Dashboard() {
             <option value="8">8</option>
           </select>
         </div>
-        {filterError ? (
-          <Popup
-            type="error"
-            body={"There was a problem with setting up filter"}
-          >
-            <button>Set Filter</button>
-          </Popup>
-        ) : (
-          <Popup type="success" body={"Filter has been set"}>
-            <button>Set Filter</button>
-          </Popup>
-        )}
+        <button>Set Filter</button>
+        {popupType}
       </form>
     </section>
   );
