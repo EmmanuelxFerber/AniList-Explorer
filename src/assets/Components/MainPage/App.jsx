@@ -10,12 +10,10 @@ import { IsAnimeInFavList, getUserFilter } from "../../Firebase/firebase";
 import { useAuth } from "../../Context/AuthContext";
 
 function App() {
-  console.log("App mounted");
   const [anime, setAnime] = React.useState();
   const [epsDisplayed, setEpsDisplayed] = React.useState(false);
   const [animeIndex, setAnimeIndex] = React.useState(1);
   const { user, loading } = useAuth();
-  console.log("loading:", loading);
 
   //loads data only if fetching authentication is completed
   React.useEffect(() => {
@@ -57,7 +55,6 @@ function App() {
   }
 
   let renderState;
-  console.log(anime);
   if (!anime) {
     renderState = <h2>Loading...</h2>;
   } else {

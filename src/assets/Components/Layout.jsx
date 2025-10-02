@@ -5,11 +5,11 @@ import { useAuth } from "../Context/AuthContext";
 
 export default function Layout() {
   const { loading } = useAuth();
-  if (loading) return <p>Loading...</p>;
+
   return (
     <>
       <Header />
-      <Outlet />
+      {loading ? <p>Loading...</p> : <Outlet />}
       <Footer />
     </>
   );

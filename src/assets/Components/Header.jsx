@@ -4,10 +4,24 @@ import { auth } from "../Firebase/firebase";
 import { useAuth } from "../Context/AuthContext";
 import { signOut } from "firebase/auth";
 import SearchBar from "./UI elements/SearchBar";
+import { useState, useEffect } from "react";
+import { getUserData } from "../Firebase/firebase";
 
 export default function Header() {
   const navigate = useNavigate();
   const { setUser, user } = useAuth();
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    async function getData() {
+      if (user) {
+        const data = await getUserData(user.uid);
+        setUserInfo(data[0]);
+      }
+    }
+
+    getData();
+  }, [user]);
 
   function searchAnime(formData) {
     const searchQuery = formData.get("search");
@@ -19,6 +33,8 @@ export default function Header() {
     await signOut(auth);
     setUser(null);
   };
+
+  const { userName } = userInfo ? userInfo : "nothing";
 
   return (
     <header>
@@ -36,7 +52,16 @@ export default function Header() {
           alt="open book under starry skies"
         />
       </NavLink>
-
+      {userInfo ? (
+        <div className="welcome-message">
+          <img
+            className="profile-picture"
+            src={`/profile${Math.floor(Math.random() * 8 + 1)}.png`}
+            alt="anime-profile-picture"
+          />
+          <p>Hello {userName}</p>
+        </div>
+      ) : null}
       <nav>
         <NavLink to={"favpage"}>My List</NavLink>
         <NavLink to={"dashboard"}>Profile</NavLink>

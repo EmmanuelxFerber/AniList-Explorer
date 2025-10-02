@@ -169,3 +169,15 @@ a {
 .rand-anime-description::-webkit-scrollbar {
   display: none;
 }
+
+.welcome-message {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-picture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
