@@ -14,6 +14,7 @@ function App() {
   const [epsDisplayed, setEpsDisplayed] = React.useState(false);
   const [animeIndex, setAnimeIndex] = React.useState(1);
   const { user, loading } = useAuth();
+  const [error, setError] = React.useState(false);
 
   //loads data only if fetching authentication is completed
   React.useEffect(() => {
@@ -24,17 +25,26 @@ function App() {
 
   async function getData() {
     if (user) {
+      setError(false);
       const filterQuery = await getUserFilter(user.uid);
       if (!filterQuery) {
         const data = await getRandomTopAnimeArray();
-
+        if (!data) {
+          setError(true);
+        }
         setAnime(data);
       } else {
         const data = await getRandomFilteredAnimeArray(filterQuery);
+        if (!data) {
+          setError(true);
+        }
         setAnime(data);
       }
     } else {
       const data = await getRandomTopAnimeArray();
+      if (!data) {
+        setError(true);
+      }
       setAnime(data);
     }
   }
@@ -53,9 +63,13 @@ function App() {
   function displayEps() {
     setEpsDisplayed((oldDisplay) => !oldDisplay);
   }
-
   let renderState;
-  if (!anime) {
+
+  if (error) {
+    renderState = (
+      <h2>There was an error fetching anime data, please refresh the site</h2>
+    );
+  } else if (!anime) {
     renderState = <h2>Loading...</h2>;
   } else {
     renderState = (

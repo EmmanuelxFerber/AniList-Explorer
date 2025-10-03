@@ -40,6 +40,7 @@ export default function Dashboard() {
     setFilteredGenres(filtered);
   }, [genreSearch, genres]);
 
+  //sets up genre filter
   function getGenreFilter(formData) {
     const selectedGenre = formData.get("genre").toLowerCase();
 
@@ -51,12 +52,13 @@ export default function Dashboard() {
       return selectedGenreObj.mal_id;
     } else return null;
   }
-
+  //sets up score filter
   async function getScoreFilter(formData) {
     const selectedScore = await formData.get("score").toLowerCase();
     return selectedScore;
   }
 
+  //combines all filters from the form and sends it to the firestore
   async function setFilter(formData) {
     try {
       setFilterError(null);
@@ -74,6 +76,8 @@ export default function Dashboard() {
   }
 
   const { userName, dateRegistered } = userInfo ? userInfo : "nothing";
+
+  //sets the pop up based on server response
   let popupType;
   if (filterLoad) {
     if (filterError) {
@@ -87,6 +91,7 @@ export default function Dashboard() {
       popupType = <Popup type="success" body={"Filter set up successfuly"} />;
     }
   } else null;
+
   return (
     <section className="user-data-section">
       <div className="user-data">
@@ -97,39 +102,46 @@ export default function Dashboard() {
       <div className="filter-container">
         <p className="filter-title">Featured anime filter</p>
         <form className="filter-form" action={setFilter}>
-          <div className="genre-filter">
-            <p>Genre</p>
-            <input
-              onChange={(e) => setGenreSearch(e.target.value)}
-              value={genreSearch}
-              type="text"
-              name="genre"
-            />
+          <div className="filters">
+            <div className="genre-filter">
+              <p>Genre</p>
+              <input
+                onChange={(e) => setGenreSearch(e.target.value)}
+                value={genreSearch}
+                type="text"
+                name="genre"
+              />
 
-            <ul className="genre-dropdown">
-              {filteredGenres?.map((genre) => (
-                <li
-                  key={genre.mal_id}
-                  onClick={() => setGenreSearch(genre.name)}
-                >
-                  {genre.name}
-                </li>
-              ))}
-            </ul>
+              <ul className="genre-dropdown">
+                {genres ? (
+                  filteredGenres?.map((genre) => (
+                    <li
+                      key={genre.mal_id}
+                      onClick={() => setGenreSearch(genre.name)}
+                    >
+                      {genre.name}
+                    </li>
+                  ))
+                ) : (
+                  <p>loading...</p>
+                )}
+              </ul>
+            </div>
+            <div className="score-filter">
+              <p>score</p>
+              <select name="score" id="score">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+              </select>
+            </div>
           </div>
-          <div>
-            <p>score</p>
-            <select name="score" id="score">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-            </select>
-          </div>
+
           <button className="filter-btn">Set Filter</button>
           {popupType}
         </form>
