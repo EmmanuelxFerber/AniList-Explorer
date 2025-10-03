@@ -94,40 +94,46 @@ export default function Dashboard() {
         <p>With us since: {dateRegistered}</p>
         <p>You have {animeNumber} anime in your Fav list</p>
       </div>
-      <form className="filter-form" action={setFilter}>
-        <div className="genre-filter">
-          <p>Genre</p>
-          <input
-            onChange={(e) => setGenreSearch(e.target.value)}
-            value={genreSearch}
-            type="text"
-            name="genre"
-          />
+      <div className="filter-container">
+        <p className="filter-title">Featured anime filter</p>
+        <form className="filter-form" action={setFilter}>
+          <div className="genre-filter">
+            <p>Genre</p>
+            <input
+              onChange={(e) => setGenreSearch(e.target.value)}
+              value={genreSearch}
+              type="text"
+              name="genre"
+            />
 
-          <ul className="genre-dropdown">
-            {filteredGenres?.map((genre) => (
-              <li key={genre.mal_id} onClick={() => setGenreSearch(genre.name)}>
-                {genre.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p>score</p>
-          <select name="score" id="score">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-          </select>
-        </div>
-        <button>Set Filter</button>
-        {popupType}
-      </form>
+            <ul className="genre-dropdown">
+              {filteredGenres?.map((genre) => (
+                <li
+                  key={genre.mal_id}
+                  onClick={() => setGenreSearch(genre.name)}
+                >
+                  {genre.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p>score</p>
+            <select name="score" id="score">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+            </select>
+          </div>
+          <button className="filter-btn">Set Filter</button>
+          {popupType}
+        </form>
+      </div>
     </section>
   );
 }

@@ -2,11 +2,30 @@
   background: linear-gradient(to bottom, #1e1f35, #2b2c4a);
   color: white;
 }
+.filter-container {
+  padding: 2rem;
+  margin-top: 2rem;
+  background-color: #121330;
+  margin: 2rem 32px;
+  border-radius: 10px;
+}
 
 .filter-form {
-  margin-top: 2rem;
+  margin-top: 1rem;
   display: flex;
+  justify-content: center;
   gap: 1rem;
+}
+
+.filter-form input,
+.genre-dropdown {
+  border: 2px solid #2b2c4a;
+}
+
+.filter-form input {
+  padding-left: 0.5rem;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .user-data,
@@ -14,9 +33,39 @@
   width: 200px;
 }
 
+.genre-filter {
+  height: 200px;
+  overflow: hidden;
+}
+
 .genre-dropdown {
   min-height: 2rem;
-  max-height: 200px;
+  max-height: calc(100% - 3rem);
   overflow: auto;
   background-color: #1e1f35;
+  width: 100%;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top: none;
+}
+
+.genre-dropdown li:hover {
+  background-color: #2b2c4a;
+}
+
+.genre-dropdown {
+  padding: 0.5rem;
+}
+
+.genre-dropdown::-webkit-scrollbar {
+  display: none;
+}
+.filter-title {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.filter-btn {
+  height: 2rem;
+  width: 100px;
 }
