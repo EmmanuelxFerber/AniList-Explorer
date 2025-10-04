@@ -3,6 +3,7 @@ import "./App.css";
 import {
   getRandomTopAnimeArray,
   getRandomFilteredAnimeArray,
+  useFetchAndCheck,
 } from "../../utils/api";
 
 import Slider from "./Slider/Slider";
@@ -10,46 +11,34 @@ import { IsAnimeInFavList, getUserFilter } from "../../Firebase/firebase";
 import { useAuth } from "../../Context/AuthContext";
 
 function App() {
-  const [anime, setAnime] = React.useState();
   const [epsDisplayed, setEpsDisplayed] = React.useState(false);
   const [animeIndex, setAnimeIndex] = React.useState(1);
   const { user, loading } = useAuth();
-  const [error, setError] = React.useState(false);
-
+  const { status, error, data, fetch } = useFetchAndCheck(getData);
+  console.log(status);
   //loads data only if fetching authentication is completed
   React.useEffect(() => {
     if (!loading) {
-      getData();
+      fetch();
     }
   }, [loading]);
 
   async function getData() {
+    let data;
     if (user) {
-      setError(false);
       const filterQuery = await getUserFilter(user.uid);
       if (!filterQuery) {
-        const data = await getRandomTopAnimeArray();
-        if (!data) {
-          setError(true);
-        }
-        setAnime(data);
+        data = await getRandomTopAnimeArray();
       } else {
-        const data = await getRandomFilteredAnimeArray(filterQuery);
-        if (!data) {
-          setError(true);
-        }
-        setAnime(data);
+        data = await getRandomFilteredAnimeArray(filterQuery);
       }
     } else {
-      const data = await getRandomTopAnimeArray();
-      if (!data) {
-        setError(true);
-      }
-      setAnime(data);
+      data = await getRandomTopAnimeArray();
     }
+    return data;
   }
   function incrementAnimeIndex() {
-    const animeArrayLength = anime.length;
+    const animeArrayLength = data.length;
     if (animeIndex !== animeArrayLength - 1) {
       setAnimeIndex((old) => old + 1);
     } else {
@@ -63,18 +52,18 @@ function App() {
   function displayEps() {
     setEpsDisplayed((oldDisplay) => !oldDisplay);
   }
-  let renderState;
 
-  if (error) {
+  let renderState;
+  if (status === "loading") renderState = <h2>Loading...</h2>;
+  if (status === "error")
     renderState = (
-      <h2>There was an error fetching anime data, please refresh the site</h2>
+      <p>{`There was an error fetching anime data, please refresh the site ${error}`}</p>
     );
-  } else if (!anime) {
-    renderState = <h2>Loading...</h2>;
-  } else {
+  if (status === "empty") renderState = <p>No anime matched your filter.</p>;
+  if (status === "success") {
     renderState = (
       <Slider
-        anime={anime}
+        anime={data}
         displayEps={displayEps}
         epsDisplayed={epsDisplayed}
         getData={getData}

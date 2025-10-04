@@ -1,4 +1,5 @@
 import { shuffle } from "./utils";
+import { useState } from "react";
 
 export async function getRandomTopAnimeArray() {
   let randomPage = Math.floor(Math.random() * 40);
@@ -15,35 +16,30 @@ export async function getRandomTopAnimeArray() {
 }
 
 export async function getRandomFilteredAnimeArray(query) {
-  try {
-    const res = await fetch(
-      `https://api.jikan.moe/v4/anime${query[0].filterQuery}`
-    );
+  const res = await fetch(
+    `https://api.jikan.moe/v4/anime${query[0].filterQuery}`
+  );
 
-    const data = await res.json();
-    const totalPages = data.pagination.last_visible_page;
-    let randomPage;
-    if (totalPages < 20) {
-      randomPage = Math.floor(Math.random() * totalPages);
-    } else {
-      randomPage = Math.floor(Math.random() * 20);
-    }
-
-    const randRes = await fetch(
-      `https://api.jikan.moe/v4/anime${query[0].filterQuery}&page=${randomPage}`
-    );
-    const randData = await randRes.json();
-
-    const filterMature = randData.data.filter(
-      (anime) => anime.rating !== "RX - Hentai"
-    );
-
-    let randomAnimeArray = shuffle(filterMature);
-    return randomAnimeArray;
-  } catch (error) {
-    console.log(error);
-    return null;
+  const data = await res.json();
+  const totalPages = data.pagination.last_visible_page;
+  let randomPage;
+  if (totalPages < 20) {
+    randomPage = Math.floor(Math.random() * totalPages);
+  } else {
+    randomPage = Math.floor(Math.random() * 20);
   }
+
+  const randRes = await fetch(
+    `https://api.jikan.moe/v4/anime${query[0].filterQuery}&page=${randomPage}`
+  );
+  const randData = await randRes.json();
+  if (!randData.data) return [];
+  const filterMature = randData.data.filter(
+    (anime) => anime.rating !== "RX - Hentai"
+  );
+
+  let randomAnimeArray = shuffle(filterMature);
+  return randomAnimeArray;
 }
 
 export async function getAnimeById(id) {
@@ -77,4 +73,31 @@ export async function getAllGenres() {
   const res = await fetch("https://api.jikan.moe/v4/genres/anime");
   const data = await res.json();
   return data.data;
+}
+
+//hook to check the api response
+
+export function useFetchAndCheck(callFn) {
+  const [status, setStatus] = useState("idle");
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
+  const fetch = async () => {
+    setStatus("loading");
+    setError(null);
+    try {
+      const result = await callFn();
+      if (!result || result.length === 0) {
+        setStatus("empty");
+      } else {
+        setData(result);
+        setStatus("success");
+      }
+    } catch (error) {
+      setError(error);
+      setStatus("error");
+    }
+  };
+
+  return { status, data, error, fetch };
 }
