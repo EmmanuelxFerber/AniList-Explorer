@@ -7,7 +7,7 @@ import { FaExclamationTriangle } from "react-icons/fa";
 import { FaCircleXmark } from "react-icons/fa6";
 import { FaInfoCircle } from "react-icons/fa";
 
-export default function Popup({ type = "information", body }) {
+export default function Popup({ type = "information", body, setFilterLoad }) {
   const [popupOn, togglePopup] = React.useState(false);
   const [tooltipVisibility, setVisibility] = React.useState("invisible");
   const iconObj = {
@@ -26,6 +26,7 @@ export default function Popup({ type = "information", body }) {
     }, 1500);
     setTimeout(() => {
       togglePopup(false);
+      setFilterLoad(false);
     }, 2000);
   }
 

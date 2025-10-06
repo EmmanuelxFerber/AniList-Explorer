@@ -34,7 +34,7 @@ export default function Header() {
     setUser(null);
   };
 
-  const { userName } = userInfo ? userInfo : "nothing";
+  const { userName, profilePicNr } = userInfo ? userInfo : "nothing";
 
   return (
     <header>
@@ -56,7 +56,7 @@ export default function Header() {
         <div className="welcome-message">
           <img
             className="profile-picture"
-            src={`/profile${Math.floor(Math.random() * 8 + 1)}.png`}
+            src={`/profile${profilePicNr}.png`}
             alt="anime-profile-picture"
           />
           <p>Hello {userName}</p>

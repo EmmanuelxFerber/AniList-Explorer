@@ -15,7 +15,8 @@ export default function SignInPage() {
     const password = formData.get("password");
     const dateRegistered = new Date().toLocaleDateString();
     const userName = formData.get("username");
-    const info = { dateRegistered, userName };
+    const profilePicNr = Math.floor(Math.random() * 8 + 1);
+    const info = { dateRegistered, userName, profilePicNr };
 
     try {
       setError(null);
@@ -56,7 +57,7 @@ export default function SignInPage() {
   return (
     <section className="sign-in-section">
       {popupState}
-      <form action={signIn}>
+      <form className="sign-in-form" action={signIn}>
         <input type="text" name="username" placeholder="username" />
         <input type="email" name="email" placeholder="email" />
         <input type="password" name="password" placeholder="password" />

@@ -40,25 +40,31 @@ export default function LoginPage() {
   return (
     <section className="login-section">
       {error && <p>{error}</p>}
-      <form action={login}>
-        <input
-          className="login-email"
-          type="email"
-          name="email"
-          placeholder="email"
-        />
-        <input
-          className="login-password"
-          type="password"
-          name="password"
-          placeholder="password"
-        />
-        <button>login</button>
-      </form>
-      <p>Dont have an account?</p>
-      <Link to="/signinpage" state={{ from: location }} replace>
-        sign in!
-      </Link>
+      <div className="login-container">
+        <form className="login-form" action={login}>
+          <div className="login-form-input">
+            <input
+              className="login-email"
+              type="email"
+              name="email"
+              placeholder="email"
+            />
+            <input
+              className="login-password"
+              type="password"
+              name="password"
+              placeholder="password"
+            />
+          </div>
+          <button>login</button>
+        </form>
+        <div className="login-form-signIn">
+          <p>Dont have an account?</p>
+          <Link to="/signinpage" state={{ from: location }} replace>
+            sign in!
+          </Link>
+        </div>
+      </div>
     </section>
   );
 }

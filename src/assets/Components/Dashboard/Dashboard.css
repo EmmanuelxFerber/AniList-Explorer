@@ -46,7 +46,6 @@ select {
 }
 
 .genre-dropdown {
-  min-height: 2rem;
   max-height: calc(100% - 3rem);
   overflow: auto;
   background-color: #1e1f35;
@@ -61,7 +60,6 @@ select {
 }
 
 .genre-dropdown {
-  padding: 0.5rem;
 }
 
 .genre-dropdown::-webkit-scrollbar {

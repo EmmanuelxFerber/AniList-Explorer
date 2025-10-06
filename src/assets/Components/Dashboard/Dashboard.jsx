@@ -18,6 +18,7 @@ export default function Dashboard() {
   const [filteredGenres, setFilteredGenres] = useState([]);
   const [filterError, setFilterError] = useState("null");
   const [filterLoad, setFilterLoad] = useState(false);
+  const [selected, toggleSelected] = useState(false);
 
   useEffect(() => {
     async function getData() {
@@ -83,12 +84,19 @@ export default function Dashboard() {
     if (filterError) {
       popupType = (
         <Popup
+          setFilterLoad={setFilterLoad}
           type="error"
           body={"There was a problem with setting up filter"}
         />
       );
     } else {
-      popupType = <Popup type="success" body={"Filter set up successfuly"} />;
+      popupType = (
+        <Popup
+          setFilterLoad={setFilterLoad}
+          type="success"
+          body={"Filter set up successfuly"}
+        />
+      );
     }
   } else null;
 
@@ -106,23 +114,29 @@ export default function Dashboard() {
             <div className="genre-filter">
               <p>Genre</p>
               <input
-                onChange={(e) => setGenreSearch(e.target.value)}
+                onChange={(e) => {
+                  setGenreSearch(e.target.value);
+                  toggleSelected(false);
+                }}
                 value={genreSearch}
                 type="text"
                 name="genre"
               />
 
               <ul className="genre-dropdown">
-                {genres ? (
+                {genres && !selected ? (
                   filteredGenres?.map((genre) => (
                     <li
                       key={genre.mal_id}
-                      onClick={() => setGenreSearch(genre.name)}
+                      onClick={() => {
+                        toggleSelected(true);
+                        setGenreSearch(genre.name);
+                      }}
                     >
                       {genre.name}
                     </li>
                   ))
-                ) : (
+                ) : selected ? null : (
                   <p>loading...</p>
                 )}
               </ul>
@@ -142,7 +156,9 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <button className="filter-btn">Set Filter</button>
+          <button disabled={filterLoad ? true : false} className="filter-btn">
+            Set Filter
+          </button>
           {popupType}
         </form>
       </div>

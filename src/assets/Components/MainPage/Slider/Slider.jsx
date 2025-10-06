@@ -46,16 +46,12 @@ export default function Slider({
         />
       </div>
 
-      <button
-        disabled={sliding ? true : false}
-        onClick={displayEps}
-        className="rand-anime-ep-number"
-      >
+      <button disabled={sliding ? true : false} onClick={displayEps}>
         List of episodes ({episodes})
       </button>
       {epsDisplayed ? (
         <EpisodeList
-          className="rand-anime-episodes"
+          className="rand-anime-btn"
           id={mal_id}
           episodeNumber={episodes}
         />

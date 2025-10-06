@@ -15,7 +15,7 @@ function App() {
   const [animeIndex, setAnimeIndex] = React.useState(1);
   const { user, loading } = useAuth();
   const { status, error, data, fetch } = useFetchAndCheck(getData);
-  console.log(status);
+
   //loads data only if fetching authentication is completed
   React.useEffect(() => {
     if (!loading) {
@@ -55,10 +55,12 @@ function App() {
 
   let renderState;
   if (status === "loading") renderState = <h2>Loading...</h2>;
-  if (status === "error")
+  if (status === "error") {
+    console.log(error);
     renderState = (
-      <p>{`There was an error fetching anime data, please refresh the site ${error}`}</p>
+      <p>{`There was an error fetching anime data, please refresh the site`}</p>
     );
+  }
   if (status === "empty") renderState = <p>No anime matched your filter.</p>;
   if (status === "success") {
     renderState = (

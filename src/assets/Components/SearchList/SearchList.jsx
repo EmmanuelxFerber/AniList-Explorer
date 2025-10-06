@@ -17,6 +17,7 @@ export default function SearchList() {
   const [animeList, setAnimeList] = useState();
   const { user } = useAuth();
   const [favAnime, setFavAnime] = useState([]);
+  const [datailedanimeIds, setDetailedAnimeIds] = useState([]);
 
   useEffect(() => {
     async function getData() {
@@ -35,6 +36,14 @@ export default function SearchList() {
     }
     getData();
   }, [query]);
+
+  function displayDetailed(animeId) {
+    setDetailedAnimeIds((prev) =>
+      prev.includes(animeId)
+        ? prev.filter((id) => id !== animeId)
+        : [...prev, animeId]
+    );
+  }
 
   const animeListHTML =
     animeList && favAnime ? (
@@ -65,35 +74,46 @@ export default function SearchList() {
                 <h1 className="rand-anime-title">{title}</h1>
               </a>
               <p className="anime-genre">{genreString}</p>
-              <p className="anime-description">{synopsisShortened}</p>
+              <p
+                onClick={() => displayDetailed(mal_id)}
+                className={`anime-description ${
+                  datailedanimeIds.includes(mal_id) ? "detailed" : ""
+                }`}
+              >
+                {synopsisShortened}
+              </p>
             </div>
 
-            {isInFavList ? (
-              <button
-                onClick={() => {
-                  DeleteAnimeByMal_id(user.uid, mal_id);
-                  setFavAnime((prev) => {
-                    return prev.filter((a) => a.animeId !== mal_id);
-                  });
-                }}
-              >
-                Remove anime from the list
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  addFavAnime(anime, user);
-                  setFavAnime((prev) => [
-                    ...prev,
-                    {
-                      animeId: anime.mal_id,
-                    },
-                  ]);
-                }}
-              >
-                Add anime to the list
-              </button>
-            )}
+            {user ? (
+              isInFavList ? (
+                <button
+                  className="rand-anime-btn"
+                  onClick={() => {
+                    DeleteAnimeByMal_id(user.uid, mal_id);
+                    setFavAnime((prev) => {
+                      return prev.filter((a) => a.animeId !== mal_id);
+                    });
+                  }}
+                >
+                  Remove anime from the list
+                </button>
+              ) : (
+                <button
+                  className="rand-anime-btn"
+                  onClick={() => {
+                    addFavAnime(anime, user);
+                    setFavAnime((prev) => [
+                      ...prev,
+                      {
+                        animeId: anime.mal_id,
+                      },
+                    ]);
+                  }}
+                >
+                  Add anime to the list
+                </button>
+              )
+            ) : null}
           </div>
         );
       })
